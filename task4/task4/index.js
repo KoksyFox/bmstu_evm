@@ -25,3 +25,5 @@ app.get("/calc/arr", function(request, response) {
     const answerJSON = JSON.stringify({result: arr});
     response.end(answerJSON);
 });
+
+// http://localhost:5015/calc/arr?a=10&b=20&c=2

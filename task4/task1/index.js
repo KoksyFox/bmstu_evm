@@ -28,8 +28,8 @@ app.get("/calculate/compare", function(request, response) {
     const bInt = parseInt(b);
     const cInt = parseInt(c);
     const sInt = Math.max(a, b, c);
-    const answerJSON = JSON.stringify({result: sInt});
-    response.end(answerJSON);
+    const result = JSON.stringify({result: sInt});
+    response.end(result);
 });
 
 // http://localhost:5015/me/page?p=a.html

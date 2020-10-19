@@ -117,12 +117,12 @@ function task_6() {
 }
 
 function task_7(file_name) {
-    function find_deep(object, cur_deep, max_deep) {
+    function find(object, cur_deep, max_deep) {
         object['DEEPER'] = "DEEPER";
         for (let leaf in object)
             if (typeof(object[leaf]) === "object") {
                 cur_deep++;
-                let res = find_deep(object[leaf], cur_deep, max_deep);
+                let res = find(object[leaf], cur_deep, max_deep);
                 max_deep = res.max_deep;
                 cur_deep = res.cur_deep;
             }
@@ -138,12 +138,12 @@ function task_7(file_name) {
         };
     }
 
-    function print_tree(obj) {
+    function output_tree(obj) {
         for (let leaf in obj) {
             if (typeof (obj[leaf]) === "object") {
                 if (obj["DEEPER"] === "DEEPER")
                     console.log(leaf);
-                print_tree(obj[leaf]);
+                output_tree(obj[leaf]);
             }
         }
     }
@@ -154,7 +154,7 @@ function task_7(file_name) {
         console.log(obj);
 
         console.log(find_deep(obj, 0, 0));
-        print_tree(obj);
+        output_tree(obj);
     }
     else
         console.log("File was not found");

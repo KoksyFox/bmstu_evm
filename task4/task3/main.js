@@ -9,12 +9,12 @@ const url = readlineSync.question('Input url: ');
 
 if (fs.existsSync('template_form.html')) {
     let html = fs.readFileSync('template_form.html', "utf-8").split('\n');
-    let fields_str_index = html.indexOf('    INPUT_FORM');
-    let url_index = fields_str_index - 1;
+    let fields_index = html.indexOf('    INPUT_FORM');
+    let url_index = fields_index - 1;
 
-    html[fields_str_index] = '';
+    html[fields_index] = '';
     fields.forEach(function (field){
-        html[fields_str_index] +=
+        html[fields_index] +=
             "    <p>" + field + "</p>\n" +
             "    <input name=\"" + field + "\" spellcheck=\"false\" autocomplete=\"off\">\n"
     })

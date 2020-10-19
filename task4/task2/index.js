@@ -12,17 +12,17 @@ console.log("My server on port " + port);
 app.get("/me/page", function(request, response) {
     const nameString = request.query.p;
     if (fs.existsSync(nameString)) {
-        const contentString = fs.readFileSync(nameString, "utf8");
-        response.end(contentString);
+        const string = fs.readFileSync(nameString, "utf8");
+        response.end(string);
     } else {
-        const contentString = fs.readFileSync("bad.html", "utf8");
-        response.end(contentString);
+        const string = fs.readFileSync("bad.html", "utf8");
+        response.end(string);
     }
 });
 
 app.get("/data/get_el", function(request, response) {
-    const elem_index = request.query.elem_index;
-    const index = parseInt(elem_index);
+    const el_index = request.query.el_index;
+    const index = parseInt(el_index);
 
     if (fs.existsSync('data.json')) {
         const data = fs.readFileSync('data.json', "utf-8");
@@ -30,8 +30,8 @@ app.get("/data/get_el", function(request, response) {
         const result = JSON.stringify({result: dataJSON['data'][index]});
         response.end(result);
     } else {
-        const contentString = fs.readFileSync("bad.html", "utf8");
-        response.end(contentString);
+        const string = fs.readFileSync("bad.html", "utf8");
+        response.end(string);
     }
 });
 
