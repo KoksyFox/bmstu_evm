@@ -99,20 +99,30 @@ function task_5(file_name) {
 
 function task_6() {
 
-    const object = {};
-    let counter = 0;
-    let ptr = object;
-    let jsonString;
-    try {
-        while(true) {
-            ptr.new_lvl = {};
-            ptr = ptr.new_lvl;
-            counter++;
-            jsonString = JSON.stringify(object);
-        }
+    let noErrorFlag = true
+    let head = {
+        num: 0,
+        next: null
     }
-    catch {
-        console.log(counter);
+
+    let curNode = head
+
+    while (noErrorFlag) {
+        try {
+            let testStr = JSON.stringify(head)
+            if (curNode.num % 500 === 0) {
+                    console.log(curNode.num)
+            }
+            curNode.next = {
+                num: curNode.num + 1,
+                next: null
+            }
+            curNode = curNode.next
+        }
+        catch (e) {
+            noErrorFlag = false
+            console.log(curNode.num - 1)
+        }
     }
 }
 
@@ -153,7 +163,7 @@ function task_7(file_name) {
         const obj = JSON.parse(contentString);
         console.log(obj);
 
-        console.log(find_deep(obj, 0, 0));
+        console.log(find(obj, 0, 0));
         output_tree(obj);
     }
     else
@@ -164,7 +174,7 @@ function task_7(file_name) {
 //task_2("test.txt");
 //task_3("txt", "./");
 //task_4("folder/files");
-//task_5("result.txt");
+task_5("result.txt");
 
 task_6();
 task_7("7.txt");
