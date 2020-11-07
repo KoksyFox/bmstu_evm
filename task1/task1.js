@@ -196,7 +196,7 @@ console.log(ChildsArr);
 let average = AverageAge(ChildsArr);
 console.log("Среднее число: " + average);
 
-FindByAge(ChildsArr, 18, 20);
+FindByAge(ChildsArr, 10, 14);
 FindFirstLetter(ChildsArr, "Н");
 FindByLength(ChildsArr, 5);
 FindByVowels(ChildsArr);

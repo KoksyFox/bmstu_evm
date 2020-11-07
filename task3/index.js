@@ -3,6 +3,7 @@
 const readlineSync = require("readline-sync");
 const fs = require("fs");
 
+// Полученые строки сделать json строкой и поместить в файл
 function task_1(file_name) {
     const N = readlineSync.question("N = ");
     let string;
@@ -17,6 +18,7 @@ function task_1(file_name) {
     fs.writeFileSync(file_name, jsonString);
 }
 
+// вывести строки только с гласными буквами
 function task_2(file_name) {
     if (fs.existsSync(file_name)) {
         const contentString = fs.readFileSync(file_name, "utf8");
@@ -41,10 +43,11 @@ function task_2(file_name) {
 
 }
 
+// вывести содержимое файлов, у которых расширение совпадает с введенным расширением
 function task_3(extension, folder_address) {
     const arr = fs.readdirSync(folder_address);
 
-    console.log("Files::");
+    console.log("Files:");
 
     for (let i = 0; i < arr.length; i++) {
         const parse_arr = arr[i].split(".");
@@ -57,6 +60,7 @@ function is_txt_file(file_name) {
     return (file_name.split(".").pop() === "txt");
 }
 
+// перебрать вложенную структуру и вывести имена файлов, у которых содержимое не превышает по длине 10 символов
 function task_4(catalog) {
     const arr = fs.readdirSync(catalog);
     let count_files = 0;
@@ -76,6 +80,7 @@ function task_4(catalog) {
         task_4(catalog + "/" + folders[i]);
 }
 
+// склеить всё содержимое введенных файлов в одну большую строку и сохранить в новый файл.
 function task_5(file_name) {
     const N = readlineSync.question("N = ");
     const arr_names = [];
@@ -97,6 +102,8 @@ function task_5(file_name) {
     fs.writeFileSync(file_name, string_data);
 }
 
+// определить максимальный возможный уровень вложенности друг в друга полей в объекте,
+//чтобы данный объект можно было преобразовать в строку формата JSON
 function task_6() {
 
     let noErrorFlag = true
@@ -110,9 +117,6 @@ function task_6() {
     while (noErrorFlag) {
         try {
             let testStr = JSON.stringify(head)
-            if (curNode.num % 500 === 0) {
-                    console.log(curNode.num)
-            }
             curNode.next = {
                 num: curNode.num + 1,
                 next: null
@@ -126,55 +130,67 @@ function task_6() {
     }
 }
 
-function task_7(file_name) {
-    function find(object, cur_deep, max_deep) {
-        object['DEEPER'] = "DEEPER";
-        for (let leaf in object)
-            if (typeof(object[leaf]) === "object") {
-                cur_deep++;
-                let res = find(object[leaf], cur_deep, max_deep);
-                max_deep = res.max_deep;
-                cur_deep = res.cur_deep;
+//рекурсивно обработать дерево и найти максимальную вложенность в дереве
+function task_7(filename){
+
+    function copyList(dst, src) {
+        let dstBuf = dst
+        let srcBuf = src
+
+        while (srcBuf != null) {
+            dstBuf.info = srcBuf.info
+            dstBuf.next = {
+                info: null,
+                next: null
             }
+            dstBuf = dstBuf.next
 
-        if (cur_deep > max_deep)
-            max_deep = cur_deep;
-        if (cur_deep < max_deep)
-            object['DEEPER'] = "";
-
-        return {
-            max_deep: max_deep,
-            cur_deep: cur_deep,
-        };
+            srcBuf = srcBuf.next
+        }
     }
 
-    function output_tree(obj) {
-        for (let leaf in obj) {
-            if (typeof (obj[leaf]) === "object") {
-                if (obj["DEEPER"] === "DEEPER")
-                    console.log(leaf);
-                output_tree(obj[leaf]);
+    function find_max_deep(jsonObject, i, maxDeepInfo, buf, bufHead) {
+        for (let elem in jsonObject) {
+            buf.next = {
+                info: elem,
+                next: null
+            }
+            
+            if (i > maxDeepInfo.maxDeep) {
+                maxDeepInfo.maxDeep = i
+                copyList(maxDeepInfo, bufHead)
+            }
+
+            if (typeof jsonObject[elem] === "object") {
+                find_max_deep(jsonObject[elem], i + 1, maxDeepInfo, buf.next, bufHead)
             }
         }
     }
 
-    if (fs.existsSync(file_name)) {
-        const contentString = fs.readFileSync(file_name, "utf8");
-        const obj = JSON.parse(contentString);
-        console.log(obj);
+    let jsonString = fs.readFileSync(filename, "utf8")
+    let jsonObj = JSON.parse(jsonString)
 
-        console.log(find(obj, 0, 0));
-        output_tree(obj);
+    let bufHead = {
+        info: jsonObj,
+        next: null
     }
-    else
-        console.log("File was not found");
+
+    let res = {
+        maxDeep: 0,
+        info: null,
+        next: null
+    }
+
+    find_max_deep(jsonObj, 1, res, bufHead, bufHead)
+
+    console.log(JSON.stringify(res, null, 4))
 }
 
-//task_1("test.txt");
-//task_2("test.txt");
-//task_3("txt", "./");
-//task_4("folder/files");
+task_1("test.txt");
+task_2("test.txt");
+task_3("txt", "./");
+task_4("folder/files");
 task_5("result.txt");
 
 task_6();
-task_7("7.txt");
+task_7("task7.json");
