@@ -134,3 +134,9 @@ app.get("/select/storage", function(request, response) {
         }));
     });
 });
+
+
+// http://localhost:5000/addCar.html
+// http://localhost:5000/addStorage.html
+// http://localhost:5000/getCarInfo.html
+// http://localhost:5000/getStorageInfo.html

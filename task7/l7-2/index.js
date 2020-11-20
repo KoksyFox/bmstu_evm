@@ -18,7 +18,6 @@ console.log(factorial);
 
 
 let arr = JSON.parse(process.argv[3]);
-console.log(arr)
 
 for (let i = 0; i < arr.length; i++)
     console.log(parseInt(useCmd(`node factorial.js ${arr[i]}`)));
